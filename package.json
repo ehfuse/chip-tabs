@@ -1,0 +1,52 @@
+{
+    "name": "@ehfuse/chip-tab",
+    "version": "1.0.0",
+    "description": "A lightweight, customizable React tab component with drag-and-drop, scroll navigation, keyboard support, and cookie persistence",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "npm run build:esm && npm run build:cjs && npm run build:types",
+        "build:esm": "esbuild src/index.ts --bundle --format=esm --outfile=dist/index.esm.js --external:react --external:react-dom --external:@dnd-kit/core --external:@dnd-kit/sortable --external:@dnd-kit/utilities --external:@dnd-kit/modifiers --minify",
+        "build:cjs": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.js --external:react --external:react-dom --external:@dnd-kit/core --external:@dnd-kit/sortable --external:@dnd-kit/utilities --external:@dnd-kit/modifiers --minify",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "react",
+        "tabs",
+        "bubble",
+        "chip",
+        "component",
+        "ui"
+    ],
+    "author": "KIM YOUNG JIN (ehfuse@gmail.com)",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ehfuse/chip-tab.git"
+    },
+    "peerDependencies": {
+        "@dnd-kit/core": "^6.0.0",
+        "@dnd-kit/modifiers": "^9.0.0",
+        "@dnd-kit/sortable": "^10.0.0",
+        "@dnd-kit/utilities": "^3.0.0",
+        "react": ">=16.8.0",
+        "react-dom": ">=16.8.0"
+    },
+    "devDependencies": {
+        "@dnd-kit/core": "^6.3.1",
+        "@dnd-kit/modifiers": "^9.0.0",
+        "@dnd-kit/sortable": "^10.0.0",
+        "@dnd-kit/utilities": "^3.2.2",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "esbuild": "^0.20.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^5.3.3"
+    }
+}

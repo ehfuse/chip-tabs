@@ -1,0 +1,8 @@
+src/
+example/
+.git/
+.gitignore
+tsconfig.json
+rollup.config.js
+node_modules/
+*.log
