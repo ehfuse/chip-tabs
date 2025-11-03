@@ -10,7 +10,7 @@
 
 ## Table of Contents
 
--   [ChipTab Props](#chiptab-props)
+-   [ChipTabs Props](#chiptab-props)
     -   [Props Overview](#props-overview)
     -   [Detailed Descriptions](#detailed-descriptions)
 -   [Event Handlers](#event-handlers)
@@ -20,7 +20,7 @@
 
 ---
 
-## ChipTab Props
+## ChipTabs Props
 
 ### Props Overview
 
@@ -37,7 +37,7 @@
 | [`selectedCookieName`](#selectedcookiename) | `string`                                       | -       | -        | Cookie name for selected tab            |
 | [`tabsCookieName`](#tabscookiename)         | `string`                                       | -       | -        | Cookie name for tabs list               |
 | [`className`](#classname)                   | `string`                                       | -       | -        | CSS class for root container            |
-| [`styles`](#styles)                         | `ChipTabStyles`                                | -       | -        | Custom style object                     |
+| [`styles`](#styles)                         | `ChipTabsStyles`                                | -       | -        | Custom style object                     |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -        | Tab selection change handler            |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -        | Close button click handler              |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -        | Tab reorder handler                     |
@@ -64,7 +64,7 @@ The key of the currently selected tab. Use for controlled component.
 ```tsx
 const [selected, setSelected] = useState("tab1");
 
-<ChipTab
+<ChipTabs
     tabs={tabs}
     selectedKey={selected}
     onChange={(event) => setSelected(tabs[event.selectedIndex].key)}
@@ -76,7 +76,7 @@ const [selected, setSelected] = useState("tab1");
 Initial selected tab. Use for uncontrolled component.
 
 ```tsx
-<ChipTab tabs={tabs} defaultSelected="tab1" />
+<ChipTabs tabs={tabs} defaultSelected="tab1" />
 ```
 
 #### `wrap`
@@ -84,7 +84,7 @@ Initial selected tab. Use for uncontrolled component.
 If `true`, tabs wrap to multiple lines. If `false`, enables horizontal scrolling.
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} />
+<ChipTabs tabs={tabs} wrap={false} />
 ```
 
 #### `showCloseButton`
@@ -92,7 +92,7 @@ If `true`, tabs wrap to multiple lines. If `false`, enables horizontal scrolling
 Whether to show close button on all tabs.
 
 ```tsx
-<ChipTab tabs={tabs} showCloseButton={true} />
+<ChipTabs tabs={tabs} showCloseButton={true} />
 ```
 
 #### `showArrows`
@@ -100,7 +100,7 @@ Whether to show close button on all tabs.
 Whether to enable scroll arrows. When `false`, arrows appear dimmed when disabled.
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} showArrows={true} />
+<ChipTabs tabs={tabs} wrap={false} showArrows={true} />
 ```
 
 #### `draggable`
@@ -108,7 +108,7 @@ Whether to enable scroll arrows. When `false`, arrows appear dimmed when disable
 Whether to enable drag-and-drop reordering of tabs.
 
 ```tsx
-<ChipTab tabs={tabs} draggable={true} />
+<ChipTabs tabs={tabs} draggable={true} />
 ```
 
 #### `keyboardNavigation`
@@ -117,10 +117,10 @@ Whether to enable arrow key (← →) navigation between tabs. When enabled, the
 
 ```tsx
 // Default: enabled
-<ChipTab tabs={tabs} />
+<ChipTabs tabs={tabs} />
 
 // Disabled
-<ChipTab tabs={tabs} keyboardNavigation={false} />
+<ChipTabs tabs={tabs} keyboardNavigation={false} />
 ```
 
 #### `selectedCookieName`
@@ -128,7 +128,7 @@ Whether to enable arrow key (← →) navigation between tabs. When enabled, the
 When set, automatically saves/loads the selected tab key to/from a cookie.
 
 ```tsx
-<ChipTab tabs={tabs} selectedCookieName="my-app-selected-tab" />
+<ChipTabs tabs={tabs} selectedCookieName="my-app-selected-tab" />
 ```
 
 > **Important**: When a cookie exists, `selectedKey` and `defaultSelected` props are ignored.
@@ -138,7 +138,7 @@ When set, automatically saves/loads the selected tab key to/from a cookie.
 When set, automatically saves/loads the tabs array to/from a cookie.
 
 ```tsx
-<ChipTab tabs={tabs} tabsCookieName="my-app-tabs" showCloseButton={true} />
+<ChipTabs tabs={tabs} tabsCookieName="my-app-tabs" showCloseButton={true} />
 ```
 
 > **Important**: When a cookie exists, the `tabs` prop is ignored. User's tab modifications (close/reorder) are preserved.
@@ -148,7 +148,7 @@ When set, automatically saves/loads the tabs array to/from a cookie.
 CSS class name to apply to the root container.
 
 ```tsx
-<ChipTab tabs={tabs} className="my-custom-tabs" />
+<ChipTabs tabs={tabs} className="my-custom-tabs" />
 ```
 
 #### `styles`
@@ -156,7 +156,7 @@ CSS class name to apply to the root container.
 Object for customizing tab styles.
 
 ```tsx
-interface ChipTabStyles {
+interface ChipTabsStyles {
     // Basic styles
     height?: string | number;
     fontSize?: string | number;
@@ -195,7 +195,7 @@ interface CloseButtonStyles {
 Example:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     styles={{
         height: "48px",
@@ -242,7 +242,7 @@ interface ChangeEvent {
 Example:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     onChange={(event) => {
         const selectedTab = tabs[event.selectedIndex];
@@ -258,7 +258,7 @@ Example:
 Called when close button is clicked. Return `true` to remove the tab.
 
 ```tsx
-<ChipTab
+<ChipTabs
   tabs={tabs}
   showCloseButton={true}
   onClose={(key) => {
@@ -268,7 +268,7 @@ Called when close button is clicked. Return `true` to remove the tab.
 />
 
 // Or asynchronous
-<ChipTab
+<ChipTabs
   tabs={tabs}
   showCloseButton={true}
   onClose={async (key) => {
@@ -294,7 +294,7 @@ Example:
 ```tsx
 const [tabs, setTabs] = useState(initialTabs);
 
-<ChipTab
+<ChipTabs
     tabs={tabs}
     draggable={true}
     onReorder={(event) => {
@@ -312,14 +312,14 @@ All types are exported from the package:
 
 ```tsx
 import type {
-    ChipTabProps,
+    ChipTabsProps,
     TabProps,
-    ChipTabStyles,
+    ChipTabsStyles,
     TabStateStyles,
     CloseButtonStyles,
     ChangeEvent,
     ReorderEvent,
-} from "@ehfuse/chip-tab";
+} from "@ehfuse/chip-tabs";
 ```
 
 ## Cookie Behavior

@@ -1,6 +1,6 @@
-# @ehfuse/chip-tab
+# @ehfuse/chip-tabs
 
-A lightweight, customizable React tab component with drag-and-drop, scroll navigation, and cookie persistence.
+A lightweight, customizable React tabs component with drag-and-drop, scroll navigation, and cookie persistence.
 
 ## Features
 
@@ -15,7 +15,7 @@ A lightweight, customizable React tab component with drag-and-drop, scroll navig
 ## Installation
 
 ```bash
-npm install @ehfuse/chip-tab
+npm install @ehfuse/chip-tabs
 ```
 
 Required peer dependencies:
@@ -27,7 +27,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifier
 ## Quick Start
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tab";
 
 function App() {
     const tabs = [
@@ -37,7 +37,7 @@ function App() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             defaultSelected="tab1"
             onChange={(event) => console.log("Selected:", event.selectedIndex)}

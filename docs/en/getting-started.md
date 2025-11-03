@@ -11,12 +11,12 @@
 ## Installation
 
 ```bash
-npm install @ehfuse/chip-tab
+npm install @ehfuse/chip-tabs
 ```
 
 ### Peer Dependencies
 
-ChipTab uses `@dnd-kit` libraries for drag-and-drop functionality. Install these packages together:
+ChipTabs uses `@dnd-kit` libraries for drag-and-drop functionality. Install these packages together:
 
 ```bash
 npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifiers
@@ -25,7 +25,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifier
 ## Basic Usage
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function App() {
     const tabs = [
@@ -35,7 +35,7 @@ function App() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             defaultSelected="home"
             onChange={(event) => {
@@ -53,7 +53,7 @@ function App() {
 By default, tabs wrap to multiple lines:
 
 ```tsx
-<ChipTab tabs={tabs} wrap={true} />
+<ChipTabs tabs={tabs} wrap={true} />
 ```
 
 ### 2. Scroll Mode
@@ -61,7 +61,7 @@ By default, tabs wrap to multiple lines:
 Set `wrap={false}` for horizontal scrolling tabs:
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} />
+<ChipTabs tabs={tabs} wrap={false} />
 ```
 
 Scroll arrows appear automatically and scroll by exactly one tab width when clicked.
@@ -71,7 +71,7 @@ Scroll arrows appear automatically and scroll by exactly one tab width when clic
 Add close buttons to tabs:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     showCloseButton={true}
     onClose={(key) => {
@@ -95,7 +95,7 @@ const tabs = [
 Enable drag-and-drop with `draggable={true}`:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     draggable={true}
     onReorder={(event) => {
@@ -111,13 +111,13 @@ Automatically save selected tab or tab list to cookies:
 
 ```tsx
 // Save selected tab only
-<ChipTab
+<ChipTabs
   tabs={tabs}
   selectedCookieName="my-selected-tab"
 />
 
 // Save both tabs and selection
-<ChipTab
+<ChipTabs
   tabs={tabs}
   selectedCookieName="my-selected-tab"
   tabsCookieName="my-tabs"
@@ -139,7 +139,7 @@ const tabs = [
     { key: "profile", label: "Profile", icon: <UserIcon /> },
 ];
 
-<ChipTab tabs={tabs} />;
+<ChipTabs tabs={tabs} />;
 ```
 
 ### 7. Custom Styling
@@ -147,7 +147,7 @@ const tabs = [
 Fully customize tab styles:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     styles={{
         height: "40px",

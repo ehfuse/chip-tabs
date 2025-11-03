@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ChipTab } from "@ehfuse/chip-tab";
-import type { TabProps } from "@ehfuse/chip-tab";
+import { ChipTabs } from "../../src/ChipTabs";
+import type { TabProps } from "../../src/types";
 import "./App.css";
 
 function App() {
@@ -104,32 +104,138 @@ function App() {
             return false; // 취소하면 false 반환
         }
 
+        // 삭제할 탭의 인덱스 찾기
+        const tabToDeleteIndex = closeableTabs.findIndex(
+            (tab) => tab.key === key
+        );
+
+        // 탭 삭제
         setCloseableTabs((prevTabs) =>
             prevTabs.filter((tab) => tab.key !== key)
         );
-        // If the closed tab was selected, select the first remaining tab
+
+        // 삭제된 탭이 현재 선택된 탭이면 새로운 탭 선택
         if (closeableSelected === key && closeableTabs.length > 1) {
             const remainingTabs = closeableTabs.filter(
                 (tab) => tab.key !== key
             );
+
             if (remainingTabs.length > 0) {
-                setCloseableSelected(remainingTabs[0].key);
+                // 삭제된 탭의 이전 탭을 선택 (첫 번째 탭이면 다음 탭 선택)
+                let newSelectedIndex;
+                if (tabToDeleteIndex > 0) {
+                    // 이전 탭이 있으면 이전 탭 선택
+                    newSelectedIndex = tabToDeleteIndex - 1;
+                } else {
+                    // 첫 번째 탭이면 다음 탭(인덱스 0) 선택
+                    newSelectedIndex = 0;
+                }
+
+                // 인덱스가 범위를 벗어나지 않도록 조정
+                if (newSelectedIndex >= remainingTabs.length) {
+                    newSelectedIndex = remainingTabs.length - 1;
+                }
+
+                setCloseableSelected(remainingTabs[newSelectedIndex].key);
             }
         }
         return true; // 성공적으로 제거
     };
 
+    const handleAddTab = () => {
+        const tabNames = [
+            "Analytics",
+            "Dashboard",
+            "Reports",
+            "Users",
+            "Documents",
+            "Settings",
+            "Logs",
+            "Security",
+            "API Keys",
+            "Billing",
+            "Support",
+            "Feedback",
+            "Themes",
+            "Integrations",
+            "Plugins",
+            "Archive",
+            "Trash",
+            "Downloads",
+            "Uploads",
+            "Statistics",
+        ];
+
+        // 현재 탭에 없는 이름 찾기
+        const existingLabels = closeableTabs.map((tab) => tab.label);
+        const availableNames = tabNames.filter(
+            (name) => !existingLabels.includes(name)
+        );
+
+        if (availableNames.length === 0) {
+            // 사용 가능한 이름이 없으면 번호로 생성
+            const newTabNumber = closeableTabs.length + 1;
+            const newKey = `new-tab-${Date.now()}`;
+            const newTab = {
+                key: newKey,
+                label: `New Tab ${newTabNumber}`,
+            };
+
+            setCloseableTabs((prev) => [...prev, newTab]);
+            setCloseableSelected(newKey);
+        } else {
+            // 랜덤하게 이름 선택
+            const randomName =
+                availableNames[
+                    Math.floor(Math.random() * availableNames.length)
+                ];
+            const newKey = `tab-${randomName
+                .toLowerCase()
+                .replace(/\s+/g, "-")}-${Date.now()}`;
+            const newTab = {
+                key: newKey,
+                label: randomName,
+            };
+
+            setCloseableTabs((prev) => [...prev, newTab]);
+            setCloseableSelected(newKey);
+        }
+    };
+
     const handleScrollCloseableTabClose = (key: string): boolean => {
+        // 삭제할 탭의 인덱스 찾기
+        const tabToDeleteIndex = scrollCloseableTabs.findIndex(
+            (tab) => tab.key === key
+        );
+
+        // 탭 삭제
         setScrollCloseableTabs((prevTabs) =>
             prevTabs.filter((tab) => tab.key !== key)
         );
-        // If the closed tab was selected, select the first remaining tab
+
+        // 삭제된 탭이 현재 선택된 탭이면 새로운 탭 선택
         if (scrollCloseableSelected === key && scrollCloseableTabs.length > 1) {
             const remainingTabs = scrollCloseableTabs.filter(
                 (tab) => tab.key !== key
             );
+
             if (remainingTabs.length > 0) {
-                setScrollCloseableSelected(remainingTabs[0].key);
+                // 삭제된 탭의 이전 탭을 선택 (첫 번째 탭이면 다음 탭 선택)
+                let newSelectedIndex;
+                if (tabToDeleteIndex > 0) {
+                    // 이전 탭이 있으면 이전 탭 선택
+                    newSelectedIndex = tabToDeleteIndex - 1;
+                } else {
+                    // 첫 번째 탭이면 다음 탭(인덱스 0) 선택
+                    newSelectedIndex = 0;
+                }
+
+                // 인덱스가 범위를 벗어나지 않도록 조정
+                if (newSelectedIndex >= remainingTabs.length) {
+                    newSelectedIndex = remainingTabs.length - 1;
+                }
+
+                setScrollCloseableSelected(remainingTabs[newSelectedIndex].key);
             }
         }
         return true; // 항상 제거 허용
@@ -141,7 +247,7 @@ function App() {
 
             <div style={{ marginBottom: "3rem" }}>
                 <h2>Basic Tabs (Wrap Mode)</h2>
-                <ChipTab
+                <ChipTabs
                     tabs={basicTabs}
                     selectedKey={basicSelected}
                     onChange={(event) => {
@@ -169,17 +275,52 @@ function App() {
 
             <div style={{ marginBottom: "3rem" }}>
                 <h2>With Close Buttons</h2>
-                <ChipTab
-                    tabs={closeableTabs}
-                    selectedKey={closeableSelected}
-                    showCloseButton={true}
-                    onChange={(event) =>
-                        setCloseableSelected(
-                            closeableTabs[event.selectedIndex].key
-                        )
-                    }
-                    onClose={handleCloseableTabClose}
-                />
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                        marginBottom: "1rem",
+                    }}
+                >
+                    <ChipTabs
+                        tabs={closeableTabs}
+                        selectedKey={closeableSelected}
+                        showCloseButton={true}
+                        onChange={(event) =>
+                            setCloseableSelected(
+                                closeableTabs[event.selectedIndex].key
+                            )
+                        }
+                        onClose={handleCloseableTabClose}
+                    />
+                    <button
+                        onClick={handleAddTab}
+                        style={{
+                            padding: "0.5rem 1rem",
+                            backgroundColor: "#3b82f6",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "0.375rem",
+                            cursor: "pointer",
+                            fontSize: "0.875rem",
+                            fontWeight: 500,
+                            transition: "background-color 0.2s",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.25rem",
+                            flexShrink: 0,
+                        }}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#2563eb")
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#3b82f6")
+                        }
+                    >
+                        + Add Tab
+                    </button>
+                </div>
                 <div
                     style={{
                         marginTop: "1rem",
@@ -203,7 +344,7 @@ function App() {
                         borderRadius: "0.5rem",
                     }}
                 >
-                    <ChipTab
+                    <ChipTabs
                         tabs={scrollTabs}
                         selectedKey={scrollSelected}
                         wrap={false}
@@ -239,7 +380,7 @@ function App() {
                         borderRadius: "0.5rem",
                     }}
                 >
-                    <ChipTab
+                    <ChipTabs
                         tabs={scrollCloseableTabs}
                         selectedKey={scrollCloseableSelected}
                         wrap={false}
@@ -280,7 +421,7 @@ function App() {
                         borderRadius: "0.5rem",
                     }}
                 >
-                    <ChipTab
+                    <ChipTabs
                         tabs={scrollCloseableTabs}
                         selectedKey={scrollCloseableSelected}
                         wrap={false}
@@ -321,7 +462,7 @@ function App() {
                         borderRadius: "0.5rem",
                     }}
                 >
-                    <ChipTab
+                    <ChipTabs
                         tabs={draggableTabs}
                         selectedKey={draggableSelected}
                         wrap={false}
@@ -367,7 +508,7 @@ function App() {
 
             <div style={{ marginBottom: "3rem" }}>
                 <h2>Custom Styled Tabs</h2>
-                <ChipTab
+                <ChipTabs
                     tabs={basicTabs.slice(0, 10)}
                     selectedKey={basicSelected}
                     onChange={(event) =>
@@ -423,7 +564,7 @@ function App() {
                         borderRadius: "0.5rem",
                     }}
                 >
-                    <ChipTab
+                    <ChipTabs
                         tabs={draggableTabs}
                         selectedKey={draggableSelected}
                         wrap={false}

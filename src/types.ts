@@ -19,7 +19,7 @@ export interface CloseButtonStyles {
     hoverBgColor?: string;
 }
 
-export interface ChipTabStyles {
+export interface ChipTabsStyles {
     // 기본 스타일
     height?: string | number;
     fontSize?: string | number;
@@ -52,7 +52,7 @@ export interface ReorderEvent {
     toIndex: number; // 이동 후 인덱스
 }
 
-export interface ChipTabProps {
+export interface ChipTabsProps {
     className?: string;
     defaultSelected?: string;
     draggable?: boolean; // 드래그 앤 드롭으로 탭 순서 변경 가능 여부
@@ -64,7 +64,7 @@ export interface ChipTabProps {
     selectedKey?: string; // 외부에서 선택된 키를 제어할 수 있도록 추가
     showArrows?: boolean; // 스크롤 화살표 표시 여부 (기본값 true, 비활성화 시 희미하게 표시)
     showCloseButton?: boolean; // close 버튼 표시 여부
-    styles?: ChipTabStyles; // 스타일 커스터마이징
+    styles?: ChipTabsStyles; // 스타일 커스터마이징
     tabs: TabProps[];
     tabsCookieName?: string; // 설정 시 tabs 배열을 쿠키에 자동 저장/불러오기
     wrap?: boolean; // flex-wrap 사용 여부 (false면 좌우 스크롤)

@@ -1,8 +1,8 @@
-export { ChipTab } from "./ChipTab";
+export { ChipTabs } from "./ChipTabs";
 export type {
-    TabProps,
-    ChipTabProps,
-    ChipTabStyles,
+    ChipTabsProps as TabsProps,
+    ChipTabsProps,
+    ChipTabsStyles,
     TabStateStyles,
     CloseButtonStyles,
     ChangeEvent,

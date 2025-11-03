@@ -2,7 +2,7 @@
 
 ## 목차
 
--   [ChipTab Props](#chiptab-props)
+-   [ChipTabs Props](#chiptab-props)
     -   [필수 Props](#필수-props)
     -   [선택적 Props](#선택적-props)
 -   [이벤트 핸들러](#이벤트-핸들러)
@@ -12,7 +12,7 @@
 
 ---
 
-## ChipTab Props
+## ChipTabs Props
 
 ### Props 목록
 
@@ -29,7 +29,7 @@
 | [`selectedCookieName`](#selectedcookiename) | `string`                                       | -       | -    | 선택된 탭 쿠키 저장 이름             |
 | [`tabsCookieName`](#tabscookiename)         | `string`                                       | -       | -    | 탭 목록 쿠키 저장 이름               |
 | [`className`](#classname)                   | `string`                                       | -       | -    | 최상위 컨테이너 CSS 클래스           |
-| [`styles`](#styles)                         | `ChipTabStyles`                                | -       | -    | 커스텀 스타일 객체                   |
+| [`styles`](#styles)                         | `ChipTabsStyles`                                | -       | -    | 커스텀 스타일 객체                   |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -    | 탭 선택 변경 핸들러                  |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -    | 닫기 버튼 클릭 핸들러                |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -    | 탭 순서 변경 핸들러                  |
@@ -56,7 +56,7 @@ interface TabProps {
 ```tsx
 const [selected, setSelected] = useState("tab1");
 
-<ChipTab
+<ChipTabs
     tabs={tabs}
     selectedKey={selected}
     onChange={(event) => setSelected(tabs[event.selectedIndex].key)}
@@ -68,7 +68,7 @@ const [selected, setSelected] = useState("tab1");
 초기 선택 탭입니다. 비제어 컴포넌트로 사용할 때 필요합니다.
 
 ```tsx
-<ChipTab tabs={tabs} defaultSelected="tab1" />
+<ChipTabs tabs={tabs} defaultSelected="tab1" />
 ```
 
 #### `wrap`
@@ -76,7 +76,7 @@ const [selected, setSelected] = useState("tab1");
 `true`이면 탭들이 여러 줄로 줄바꿈되고, `false`이면 가로 스크롤이 가능합니다.
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} />
+<ChipTabs tabs={tabs} wrap={false} />
 ```
 
 #### `showCloseButton`
@@ -84,7 +84,7 @@ const [selected, setSelected] = useState("tab1");
 모든 탭에 닫기 버튼을 표시할지 여부입니다.
 
 ```tsx
-<ChipTab tabs={tabs} showCloseButton={true} />
+<ChipTabs tabs={tabs} showCloseButton={true} />
 ```
 
 #### `showArrows`
@@ -92,7 +92,7 @@ const [selected, setSelected] = useState("tab1");
 스크롤 화살표 활성화 여부입니다. `false`이면 비활성화 시 희미하게 표시됩니다.
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} showArrows={true} />
+<ChipTabs tabs={tabs} wrap={false} showArrows={true} />
 ```
 
 #### `draggable`
@@ -100,7 +100,7 @@ const [selected, setSelected] = useState("tab1");
 드래그 앤 드롭으로 탭 순서를 변경할 수 있는지 여부입니다.
 
 ```tsx
-<ChipTab tabs={tabs} draggable={true} />
+<ChipTabs tabs={tabs} draggable={true} />
 ```
 
 #### `keyboardNavigation`
@@ -109,10 +109,10 @@ const [selected, setSelected] = useState("tab1");
 
 ```tsx
 // 기본값: 활성화
-<ChipTab tabs={tabs} />
+<ChipTabs tabs={tabs} />
 
 // 비활성화
-<ChipTab tabs={tabs} keyboardNavigation={false} />
+<ChipTabs tabs={tabs} keyboardNavigation={false} />
 ```
 
 #### `selectedCookieName`
@@ -120,7 +120,7 @@ const [selected, setSelected] = useState("tab1");
 설정 시 선택된 탭의 key를 쿠키에 자동으로 저장/불러오기합니다.
 
 ```tsx
-<ChipTab tabs={tabs} selectedCookieName="my-app-selected-tab" />
+<ChipTabs tabs={tabs} selectedCookieName="my-app-selected-tab" />
 ```
 
 > **중요**: 쿠키가 존재하면 `selectedKey`와 `defaultSelected` props는 무시됩니다.
@@ -130,7 +130,7 @@ const [selected, setSelected] = useState("tab1");
 설정 시 tabs 배열을 쿠키에 자동으로 저장/불러오기합니다.
 
 ```tsx
-<ChipTab tabs={tabs} tabsCookieName="my-app-tabs" showCloseButton={true} />
+<ChipTabs tabs={tabs} tabsCookieName="my-app-tabs" showCloseButton={true} />
 ```
 
 > **중요**: 쿠키가 존재하면 `tabs` prop은 무시됩니다. 사용자가 닫거나 재정렬한 탭 목록이 유지됩니다.
@@ -140,7 +140,7 @@ const [selected, setSelected] = useState("tab1");
 최상위 컨테이너에 적용할 CSS 클래스명입니다.
 
 ```tsx
-<ChipTab tabs={tabs} className="my-custom-tabs" />
+<ChipTabs tabs={tabs} className="my-custom-tabs" />
 ```
 
 #### `styles`
@@ -148,7 +148,7 @@ const [selected, setSelected] = useState("tab1");
 탭 스타일을 커스터마이징하는 객체입니다.
 
 ```tsx
-interface ChipTabStyles {
+interface ChipTabsStyles {
     // 기본 스타일
     height?: string | number;
     fontSize?: string | number;
@@ -187,7 +187,7 @@ interface CloseButtonStyles {
 예제:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     styles={{
         height: "48px",
@@ -235,7 +235,7 @@ interface ChangeEvent {
 예제:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     onChange={(event) => {
         const selectedTab = tabs[event.selectedIndex];
@@ -252,7 +252,7 @@ interface ChangeEvent {
 -   **설명**: 닫기 버튼 클릭 시 호출. `true`를 반환하면 탭이 제거됨
 
 ```tsx
-<ChipTab
+<ChipTabs
   tabs={tabs}
   showCloseButton={true}
   onClose={(key) => {
@@ -262,7 +262,7 @@ interface ChangeEvent {
 />
 
 // 또는 비동기
-<ChipTab
+<ChipTabs
   tabs={tabs}
   showCloseButton={true}
   onClose={async (key) => {
@@ -289,7 +289,7 @@ interface ReorderEvent {
 ```tsx
 const [tabs, setTabs] = useState(initialTabs);
 
-<ChipTab
+<ChipTabs
     tabs={tabs}
     draggable={true}
     onReorder={(event) => {
@@ -307,14 +307,14 @@ const [tabs, setTabs] = useState(initialTabs);
 
 ```tsx
 import type {
-    ChipTabProps,
+    ChipTabsProps,
     TabProps,
-    ChipTabStyles,
+    ChipTabsStyles,
     TabStateStyles,
     CloseButtonStyles,
     ChangeEvent,
     ReorderEvent,
-} from "@ehfuse/chip-tab";
+} from "@ehfuse/chip-tabs";
 ```
 
 ## 쿠키 동작 방식

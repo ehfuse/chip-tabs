@@ -42,7 +42,7 @@
 The most basic usage.
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function BasicExample() {
     const tabs = [
@@ -51,7 +51,7 @@ function BasicExample() {
         { key: "about", label: "About" },
     ];
 
-    return <ChipTab tabs={tabs} defaultSelected="home" />;
+    return <ChipTabs tabs={tabs} defaultSelected="home" />;
 }
 ```
 
@@ -61,7 +61,7 @@ Manage state directly.
 
 ```tsx
 import { useState } from "react";
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function ControlledExample() {
     const [selected, setSelected] = useState("tab1");
@@ -73,7 +73,7 @@ function ControlledExample() {
 
     return (
         <div>
-            <ChipTab
+            <ChipTabs
                 tabs={tabs}
                 selectedKey={selected}
                 onChange={(event) => setSelected(tabs[event.selectedIndex].key)}
@@ -92,7 +92,7 @@ Close tabs with confirmation dialog.
 
 ```tsx
 import { useState } from "react";
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function CloseableTabsExample() {
     const [tabs, setTabs] = useState([
@@ -116,7 +116,7 @@ function CloseableTabsExample() {
     };
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             selectedKey={selected}
             showCloseButton={true}
@@ -133,7 +133,7 @@ Reorder tabs by dragging.
 
 ```tsx
 import { useState } from "react";
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function DraggableTabsExample() {
     const [tabs, setTabs] = useState([
@@ -152,7 +152,7 @@ function DraggableTabsExample() {
         console.log(`Tab moved: ${event.fromIndex} → ${event.toIndex}`);
     };
 
-    return <ChipTab tabs={tabs} draggable={true} onReorder={handleReorder} />;
+    return <ChipTabs tabs={tabs} draggable={true} onReorder={handleReorder} />;
 }
 ```
 
@@ -161,7 +161,7 @@ function DraggableTabsExample() {
 Add icons to each tab.
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 import { HomeIcon, UserIcon, SettingsIcon } from "./icons";
 
 function IconTabsExample() {
@@ -183,7 +183,7 @@ function IconTabsExample() {
         },
     ];
 
-    return <ChipTab tabs={tabs} defaultSelected="home" />;
+    return <ChipTabs tabs={tabs} defaultSelected="home" />;
 }
 ```
 
@@ -192,7 +192,7 @@ function IconTabsExample() {
 Useful for displaying many tabs in limited space.
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function ScrollModeExample() {
     const tabs = Array.from({ length: 20 }, (_, i) => ({
@@ -202,7 +202,7 @@ function ScrollModeExample() {
 
     return (
         <div style={{ maxWidth: "600px" }}>
-            <ChipTab tabs={tabs} wrap={false} defaultSelected="tab1" />
+            <ChipTabs tabs={tabs} wrap={false} defaultSelected="tab1" />
         </div>
     );
 }
@@ -213,7 +213,7 @@ function ScrollModeExample() {
 Save only the selected tab to cookie.
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function CookieSelectionExample() {
     const tabs = [
@@ -223,7 +223,7 @@ function CookieSelectionExample() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             selectedCookieName="my-app-tab"
             onChange={(event) => {
@@ -245,7 +245,7 @@ Save both tabs and selection to cookies.
 
 ```tsx
 import { useState } from "react";
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function FullCookiePersistenceExample() {
     const initialTabs = [
@@ -256,7 +256,7 @@ function FullCookiePersistenceExample() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={initialTabs}
             selectedCookieName="app-selected"
             tabsCookieName="app-tabs"
@@ -278,7 +278,7 @@ function FullCookiePersistenceExample() {
 Apply fully customized styles.
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function CustomStyledExample() {
     const tabs = [
@@ -288,7 +288,7 @@ function CustomStyledExample() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             defaultSelected="tab1"
             styles={{
@@ -336,11 +336,11 @@ Real-world example using multiple features together.
 ```tsx
 import { useState } from "react";
 import {
-    ChipTab,
+    ChipTabs,
     type TabProps,
     type ChangeEvent,
     type ReorderEvent,
-} from "@ehfuse/chip-tab";
+} from "@ehfuse/chip-tabs";
 
 function AdvancedExample() {
     const [tabs, setTabs] = useState<TabProps[]>([
@@ -388,7 +388,7 @@ function AdvancedExample() {
 
     return (
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-            <ChipTab
+            <ChipTabs
                 tabs={tabs}
                 selectedKey={selected}
                 wrap={false}

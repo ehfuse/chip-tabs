@@ -3,12 +3,12 @@
 ## 설치
 
 ```bash
-npm install @ehfuse/chip-tab
+npm install @ehfuse/chip-tabs
 ```
 
 ### Peer Dependencies
 
-ChipTab은 드래그 앤 드롭 기능을 위해 `@dnd-kit` 라이브러리를 사용합니다. 다음 패키지들을 함께 설치해야 합니다:
+ChipTabs은 드래그 앤 드롭 기능을 위해 `@dnd-kit` 라이브러리를 사용합니다. 다음 패키지들을 함께 설치해야 합니다:
 
 ```bash
 npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifiers
@@ -17,7 +17,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifier
 ## 기본 사용법
 
 ```tsx
-import { ChipTab } from "@ehfuse/chip-tab";
+import { ChipTabs } from "@ehfuse/chip-tabs";
 
 function App() {
     const tabs = [
@@ -27,7 +27,7 @@ function App() {
     ];
 
     return (
-        <ChipTab
+        <ChipTabs
             tabs={tabs}
             defaultSelected="home"
             onChange={(event) => {
@@ -45,7 +45,7 @@ function App() {
 기본적으로 탭들은 여러 줄로 자동 줄바꿈됩니다:
 
 ```tsx
-<ChipTab tabs={tabs} wrap={true} />
+<ChipTabs tabs={tabs} wrap={true} />
 ```
 
 ### 2. Scroll 모드
@@ -53,7 +53,7 @@ function App() {
 `wrap={false}`로 설정하면 좌우 스크롤이 가능한 한 줄 탭이 됩니다:
 
 ```tsx
-<ChipTab tabs={tabs} wrap={false} />
+<ChipTabs tabs={tabs} wrap={false} />
 ```
 
 스크롤 화살표가 자동으로 표시되며, 클릭 시 정확히 한 탭씩 이동합니다.
@@ -63,7 +63,7 @@ function App() {
 탭에 닫기 버튼을 추가할 수 있습니다:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     showCloseButton={true}
     onClose={(key) => {
@@ -87,7 +87,7 @@ const tabs = [
 `draggable={true}`로 설정하면 탭 순서를 드래그로 변경할 수 있습니다:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     draggable={true}
     onReorder={(event) => {
@@ -103,13 +103,13 @@ const tabs = [
 
 ```tsx
 // 선택된 탭만 저장
-<ChipTab
+<ChipTabs
   tabs={tabs}
   selectedCookieName="my-selected-tab"
 />
 
 // 탭 목록과 선택 모두 저장
-<ChipTab
+<ChipTabs
   tabs={tabs}
   selectedCookieName="my-selected-tab"
   tabsCookieName="my-tabs"
@@ -131,7 +131,7 @@ const tabs = [
     { key: "profile", label: "프로필", icon: <UserIcon /> },
 ];
 
-<ChipTab tabs={tabs} />;
+<ChipTabs tabs={tabs} />;
 ```
 
 ### 7. 커스텀 스타일
@@ -139,7 +139,7 @@ const tabs = [
 탭의 스타일을 세밀하게 커스터마이징할 수 있습니다:
 
 ```tsx
-<ChipTab
+<ChipTabs
     tabs={tabs}
     styles={{
         height: "40px",

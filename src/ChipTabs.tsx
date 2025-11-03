@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
-import type { TabProps, ChipTabProps } from "./types";
+import type { TabProps, ChipTabsProps } from "./types";
 import { CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "./icons";
 import {
     DndContext,
@@ -90,6 +90,13 @@ function ScrollArrow({ direction, isEnabled, onClick }: ScrollArrowProps) {
     );
 }
 
+// 탭 애니메이션 상태 인터페이스
+interface TabAnimationState {
+    isRemoving: boolean;
+    opacity: number;
+    width: number;
+}
+
 // Sortable 탭 아이템 컴포넌트
 interface SortableTabProps {
     tag: TabProps;
@@ -107,6 +114,7 @@ interface SortableTabProps {
     onCloseMouseLeave: () => void;
     setButtonRef: (el: HTMLDivElement | null, key: string) => void;
     draggable?: boolean;
+    animationState?: TabAnimationState;
 }
 
 function SortableTab({
@@ -125,6 +133,7 @@ function SortableTab({
     onCloseMouseLeave,
     setButtonRef,
     draggable = false,
+    animationState,
 }: SortableTabProps) {
     const {
         attributes,
@@ -138,9 +147,19 @@ function SortableTab({
     const style: CSSProperties = {
         ...tabStyle,
         transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.5 : 1,
+        transition: animationState?.isRemoving
+            ? "opacity 0.3s ease-out, width 0.3s ease-out, margin 0.3s ease-out, padding 0.3s ease-out"
+            : transition,
+        opacity: isDragging ? 0.5 : animationState?.opacity ?? 1,
         cursor: draggable ? "grab" : tabStyle.cursor,
+        ...(animationState?.isRemoving && {
+            width: `${animationState.width}px`,
+            marginLeft: animationState.width < 50 ? "0" : undefined,
+            marginRight: animationState.width < 50 ? "0" : undefined,
+            paddingLeft: animationState.width < 50 ? "0" : undefined,
+            paddingRight: animationState.width < 50 ? "0" : undefined,
+            overflow: "hidden",
+        }),
     };
 
     return (
@@ -190,7 +209,7 @@ const setCookie = (name: string, value: string, days: number = 365) => {
     document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
 };
 
-export function ChipTab({
+export function ChipTabs({
     tabs: tagItems,
     showCloseButton = false,
     defaultSelected = "hot",
@@ -206,7 +225,7 @@ export function ChipTab({
     onReorder,
     selectedCookieName,
     tabsCookieName,
-}: ChipTabProps) {
+}: ChipTabsProps) {
     // 쿠키에서 초기 상태 불러오기
     const getInitialState = () => {
         let initialTabs = tagItems;
@@ -559,13 +578,59 @@ export function ChipTab({
     }; // Close 버튼 클릭 핸들러
     const handleCloseClick = async (event: React.MouseEvent, key: string) => {
         event.stopPropagation(); // 부모 클릭 이벤트 방지
-        // console.debug("Close button clicked for key:", key);
+
+        // onClose 콜백이 있으면 호출하고 결과 확인
         if (onClose) {
             const result = await onClose(key);
-            // onClose가 false를 반환하면 탭을 제거하지 않음
-            // if (result === false) {
-            //     console.debug("Close cancelled for key:", key);
-            // }
+            if (result === false) {
+                return; // 취소된 경우 애니메이션 없이 종료
+            }
+        }
+
+        // 애니메이션 시작
+        const tabElement = buttonRefs.current.get(key);
+        if (tabElement) {
+            const initialWidth = tabElement.offsetWidth;
+
+            // 애니메이션 상태 설정
+            setAnimatingTabs((prev) =>
+                new Map(prev).set(key, {
+                    isRemoving: true,
+                    opacity: 1,
+                    width: initialWidth,
+                })
+            );
+
+            // fadeout 애니메이션
+            setTimeout(() => {
+                setAnimatingTabs((prev) => {
+                    const newMap = new Map(prev);
+                    const state = newMap.get(key);
+                    if (state) {
+                        newMap.set(key, {
+                            ...state,
+                            opacity: 0,
+                            width: 0,
+                        });
+                    }
+                    return newMap;
+                });
+            }, 50);
+
+            // 애니메이션 완료 후 탭 제거
+            setTimeout(() => {
+                setTabs((prevTabs) =>
+                    prevTabs.filter((tab) => tab.key !== key)
+                );
+                setAnimatingTabs((prev) => {
+                    const newMap = new Map(prev);
+                    newMap.delete(key);
+                    return newMap;
+                });
+            }, 350);
+        } else {
+            // 엘리먼트를 찾을 수 없으면 즉시 제거
+            setTabs((prevTabs) => prevTabs.filter((tab) => tab.key !== key));
         }
     };
 
@@ -582,6 +647,11 @@ export function ChipTab({
     // Hover 효과를 위한 상태 추가
     const [hoveredTab, setHoveredTab] = useState<string | null>(null);
     const [hoveredClose, setHoveredClose] = useState<string | null>(null);
+
+    // 애니메이션 상태 관리
+    const [animatingTabs, setAnimatingTabs] = useState<
+        Map<string, TabAnimationState>
+    >(new Map());
 
     // 기본값 설정
     const {
@@ -756,6 +826,7 @@ export function ChipTab({
                         onCloseMouseLeave={() => setHoveredClose(null)}
                         setButtonRef={setButtonRef}
                         draggable={draggable}
+                        animationState={animatingTabs.get(tag.key)}
                     />
                 );
             })}
