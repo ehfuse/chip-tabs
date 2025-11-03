@@ -26,7 +26,7 @@
 
 | Prop                                        | Type                                           | Default | Required | Description                             |
 | ------------------------------------------- | ---------------------------------------------- | ------- | -------- | --------------------------------------- |
-| [`tabs`](#tabs--required)                   | `ChipTabProps[]`                                   | -       | ✅       | Tab list to display                     |
+| [`tabs`](#tabs--required)                   | `ChipTabProps[]`                               | -       | ✅       | Tab list to display                     |
 | [`selectedKey`](#selectedkey)               | `string`                                       | -       | -        | Currently selected tab key (controlled) |
 | [`defaultSelected`](#defaultselected)       | `string`                                       | -       | -        | Initial selected tab (uncontrolled)     |
 | [`wrap`](#wrap)                             | `boolean`                                      | `true`  | -        | Multi-line wrap enabled                 |
@@ -37,7 +37,7 @@
 | [`selectedCookieName`](#selectedcookiename) | `string`                                       | -       | -        | Cookie name for selected tab            |
 | [`tabsCookieName`](#tabscookiename)         | `string`                                       | -       | -        | Cookie name for tabs list               |
 | [`className`](#classname)                   | `string`                                       | -       | -        | CSS class for root container            |
-| [`styles`](#styles)                         | `ChipTabsStyles`                                | -       | -        | Custom style object                     |
+| [`styles`](#styles)                         | `ChipTabsStyles`                               | -       | -        | Custom style object                     |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -        | Tab selection change handler            |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -        | Close button click handler              |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -        | Tab reorder handler                     |
@@ -291,7 +291,7 @@ interface ReorderEvent {
 
 Example:
 
-```tsx
+````tsx
 const [tabs, setTabs] = useState(initialTabs);
 
 <ChipTabs
@@ -324,11 +324,12 @@ Example:
         setSelected(cookieSelectedKey);
     }}
 />
-```
+````
 
 > **Note**: When `tabsCookieName` is provided, the component may start with an empty internal tabs array while it reads cookies. `onLoaded` is useful to update parent state once the cookie values are available.
 
 ## Type Definitions
+
 ## Type Definitions
 
 All types are exported from the package:

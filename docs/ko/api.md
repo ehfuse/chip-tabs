@@ -18,7 +18,7 @@
 
 | Prop                                        | 타입                                           | 기본값  | 필수 | 설명                                 |
 | ------------------------------------------- | ---------------------------------------------- | ------- | ---- | ------------------------------------ |
-| [`tabs`](#tabs--필수)                       | `ChipTabProps[]`                                   | -       | ✅   | 표시할 탭 목록                       |
+| [`tabs`](#tabs--필수)                       | `ChipTabProps[]`                               | -       | ✅   | 표시할 탭 목록                       |
 | [`selectedKey`](#selectedkey)               | `string`                                       | -       | -    | 현재 선택된 탭의 key (제어 컴포넌트) |
 | [`defaultSelected`](#defaultselected)       | `string`                                       | -       | -    | 초기 선택 탭 (비제어 컴포넌트)       |
 | [`wrap`](#wrap)                             | `boolean`                                      | `true`  | -    | 여러 줄 줄바꿈 여부                  |
@@ -29,7 +29,7 @@
 | [`selectedCookieName`](#selectedcookiename) | `string`                                       | -       | -    | 선택된 탭 쿠키 저장 이름             |
 | [`tabsCookieName`](#tabscookiename)         | `string`                                       | -       | -    | 탭 목록 쿠키 저장 이름               |
 | [`className`](#classname)                   | `string`                                       | -       | -    | 최상위 컨테이너 CSS 클래스           |
-| [`styles`](#styles)                         | `ChipTabsStyles`                                | -       | -    | 커스텀 스타일 객체                   |
+| [`styles`](#styles)                         | `ChipTabsStyles`                               | -       | -    | 커스텀 스타일 객체                   |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -    | 탭 선택 변경 핸들러                  |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -    | 닫기 버튼 클릭 핸들러                |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -    | 탭 순서 변경 핸들러                  |
@@ -286,7 +286,7 @@ interface ReorderEvent {
 
 예제:
 
-```tsx
+````tsx
 const [tabs, setTabs] = useState(initialTabs);
 
 <ChipTabs
@@ -319,10 +319,11 @@ const [tabs, setTabs] = useState(initialTabs);
         setSelected(cookieSelectedKey);
     }}
 />
-```
+````
 
 > **참고**: `tabsCookieName`을 사용하면 컴포넌트가 쿠키를 읽는 동안 내부 `tabs` 상태가 빈 배열로 시작할 수 있습니다. 이 때 `onLoaded`로 부모 상태를 갱신하면 레이아웃 깜빡임을 방지할 수 있습니다.
-```
+
+````
 
 ## 타입 정의
 
@@ -338,7 +339,7 @@ import type {
     ChangeEvent,
     ReorderEvent,
 } from "@ehfuse/chip-tabs";
-```
+````
 
 ## 쿠키 동작 방식
 
