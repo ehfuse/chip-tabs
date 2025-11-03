@@ -299,6 +299,29 @@ const [tabs, setTabs] = useState(initialTabs);
         setTabs(newTabs);
     }}
 />;
+
+### `onLoaded`
+
+- **타입**: `(tabs: ChipTabProps[], selectedKey: string) => void`
+- **설명**: 컴포넌트가 마운트될 때(최초 로드) 쿠키(`tabsCookieName` 또는 `selectedCookieName`)에서 초기 상태를 읽은 직후 한 번 호출됩니다. 콜백은 컴포넌트가 내부 상태 초기화에 사용한 탭 배열과 선택된 키를 인자로 받습니다. 쿠키가 props를 덮어쓸 때 상위 컴포넌트의 상태를 동기화하거나, 쿠키 로딩으로 인한 UI 깜빡임을 방지하기 위해 사용하세요.
+
+예제:
+
+```tsx
+<ChipTabs
+    tabs={initialTabs}
+    tabsCookieName="my-app-tabs"
+    selectedCookieName="my-app-selected-tab"
+    onLoaded={(cookieTabs, cookieSelectedKey) => {
+        // cookieTabs: 컴포넌트가 쿠키 로드 후 사용하게 될 탭 배열
+        // cookieSelectedKey: 컴포넌트가 사용하게 될 선택된 키
+        setTabs(cookieTabs);
+        setSelected(cookieSelectedKey);
+    }}
+/>
+```
+
+> **참고**: `tabsCookieName`을 사용하면 컴포넌트가 쿠키를 읽는 동안 내부 `tabs` 상태가 빈 배열로 시작할 수 있습니다. 이 때 `onLoaded`로 부모 상태를 갱신하면 레이아웃 깜빡임을 방지할 수 있습니다.
 ```
 
 ## 타입 정의

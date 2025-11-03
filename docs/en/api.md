@@ -304,8 +304,31 @@ const [tabs, setTabs] = useState(initialTabs);
         setTabs(newTabs);
     }}
 />;
+
+### `onLoaded`
+
+- **Type**: `(tabs: ChipTabProps[], selectedKey: string) => void`
+- **Description**: Called once on the first mount after the component finishes loading initial state from cookies (if `tabsCookieName` or `selectedCookieName` are provided) or from props when no cookie is present. The callback receives the tabs array and the selected key that the component used to initialize its internal state. Use this to synchronize parent state with the component when cookies override props or to avoid UI flicker while the component loads cookie data.
+
+Example:
+
+```tsx
+<ChipTabs
+    tabs={initialTabs}
+    tabsCookieName="my-app-tabs"
+    selectedCookieName="my-app-selected-tab"
+    onLoaded={(cookieTabs, cookieSelectedKey) => {
+        // cookieTabs: the tabs array the component will use after cookie load
+        // cookieSelectedKey: the selected key the component will use
+        setTabs(cookieTabs);
+        setSelected(cookieSelectedKey);
+    }}
+/>
 ```
 
+> **Note**: When `tabsCookieName` is provided, the component may start with an empty internal tabs array while it reads cookies. `onLoaded` is useful to update parent state once the cookie values are available.
+
+## Type Definitions
 ## Type Definitions
 
 All types are exported from the package:
