@@ -31,7 +31,7 @@ function App() {
 
     // Tabs with Close Buttons
     const [closeableTabs, setCloseableTabs] = useState<TabProps[]>([
-        { key: "home", label: "Home" },
+        { key: "home", label: "Home", hideCloseButton: true },
         { key: "workspace", label: "Workspace" },
         { key: "projects", label: "Projects" },
         { key: "tasks", label: "Tasks" },

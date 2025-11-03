@@ -657,7 +657,8 @@ export function ChipTab({
     // 탭 버튼 스타일 생성 함수
     const getTabStyle = (
         isSelected: boolean,
-        isHovered: boolean
+        isHovered: boolean,
+        hideCloseButton?: boolean
     ): CSSProperties => ({
         display: "flex",
         alignItems: "center",
@@ -667,7 +668,7 @@ export function ChipTab({
         paddingTop: paddingY,
         paddingBottom: paddingY,
         paddingLeft: paddingX,
-        paddingRight: showCloseButton ? "0.5rem" : paddingX,
+        paddingRight: showCloseButton && !hideCloseButton ? "0.5rem" : paddingX,
         fontSize,
         transition: "all 0.2s",
         flexShrink: 0,
@@ -737,7 +738,11 @@ export function ChipTab({
                         isTabHovered={isTabHovered}
                         isCloseHovered={isCloseHovered}
                         showCloseButton={showCloseButton}
-                        tabStyle={getTabStyle(isSelected, isTabHovered)}
+                        tabStyle={getTabStyle(
+                            isSelected,
+                            isTabHovered,
+                            tag.hideCloseButton
+                        )}
                         closeButtonStyle={getCloseButtonStyle(
                             isSelected,
                             isCloseHovered,
