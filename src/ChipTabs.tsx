@@ -6,8 +6,8 @@ import {
     SortableContext,
     horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { SortableTab } from "./SortableTab";
-import { ScrollArrow } from "./ScrollArrow";
+import { SortableTab } from "./components/SortableTab";
+import { ScrollArrow } from "./components/ScrollArrow";
 import { getCookie, setCookie, calculateTabHeight } from "./utils";
 import {
     useScrollArrows,

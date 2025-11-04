@@ -1,5 +1,5 @@
 import React, { CSSProperties, useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "./icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 
 interface ScrollArrowProps {
     direction: "left" | "right";

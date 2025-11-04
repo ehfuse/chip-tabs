@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
-import type { ChipTabProps } from "./types";
-import { CloseIcon } from "./icons";
+import type { ChipTabProps } from "../types";
+import { CloseIcon } from "../icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
