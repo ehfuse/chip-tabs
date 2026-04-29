@@ -22,7 +22,8 @@
 | [`selectedKey`](#selectedkey)               | `string`                                       | -       | -    | 현재 선택된 탭의 key (제어 컴포넌트) |
 | [`defaultSelected`](#defaultselected)       | `string`                                       | -       | -    | 초기 선택 탭 (비제어 컴포넌트)       |
 | [`wrap`](#wrap)                             | `boolean`                                      | `true`  | -    | 여러 줄 줄바꿈 여부                  |
-| [`showCloseButton`](#showclosebutton)       | `boolean`                                      | `false` | -    | 닫기 버튼 표시 여부                  |
+| [`showCloseButton`](#showclosebutton)       | `boolean`                                      | `false` | -    | 오른쪽 보조 버튼 영역 표시 여부      |
+| [`tabTrailingAction`](#tabtrailingaction)   | `'close' \| 'edit'`                            | `close` | -    | 보조 버튼: 닫기(X) 또는 편집(펜)    |
 | [`showArrows`](#showarrows)                 | `boolean`                                      | `true`  | -    | 스크롤 화살표 활성화 여부            |
 | [`draggable`](#draggable)                   | `boolean`                                      | `false` | -    | 드래그 앤 드롭 활성화 여부           |
 | [`keyboardNavigation`](#keyboardnavigation) | `boolean`                                      | `true`  | -    | 방향키로 탭 이동 활성화 여부         |
@@ -32,6 +33,7 @@
 | [`styles`](#styles)                         | `ChipTabsStyles`                               | -       | -    | 커스텀 스타일 객체                   |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -    | 탭 선택 변경 핸들러                  |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -    | 닫기 버튼 클릭 핸들러                |
+| [`onEdit`](#onedit)                         | `(key: string) => void`                        | -       | -    | 편집 버튼 클릭 핸들러                |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -    | 탭 순서 변경 핸들러                  |
 
 ### 상세 설명
@@ -45,7 +47,7 @@ interface ChipTabProps {
     key: string; // 탭의 고유 식별자
     label: string; // 탭에 표시될 텍스트
     icon?: ReactNode; // 선택적 아이콘
-    hideCloseButton?: boolean; // 이 탭의 닫기 버튼 숨김 여부
+    hideCloseButton?: boolean; // 이 탭의 오른쪽 보조 버튼(닫기/편집) 숨김 여부
 }
 ```
 
@@ -81,10 +83,26 @@ const [selected, setSelected] = useState("tab1");
 
 #### `showCloseButton`
 
-모든 탭에 닫기 버튼을 표시할지 여부입니다.
+모든 탭 오른쪽에 보조 버튼 영역을 표시할지 여부입니다. 아이콘·동작은 [`tabTrailingAction`](#tabtrailingaction)으로 구분합니다.
 
 ```tsx
 <ChipTabs tabs={tabs} showCloseButton={true} />
+```
+
+#### `tabTrailingAction`
+
+`showCloseButton`이 `true`일 때 오른쪽 버튼의 종류입니다.
+
+- `close`(기본): X 아이콘, 클릭 시 [`onClose`](#onclose) 후 패키지가 탭을 제거합니다.
+- `edit`: 펜 아이콘, 클릭 시 [`onEdit`](#onedit)만 호출합니다. 탭 이름 변경·삭제 UI는 소비처에서 `tabs` state를 갱신하면 됩니다.
+
+```tsx
+<ChipTabs
+    tabs={tabs}
+    showCloseButton
+    tabTrailingAction="edit"
+    onEdit={(key) => openRenameDialog(key)}
+/>
 ```
 
 #### `showArrows`
@@ -246,10 +264,30 @@ interface ChangeEvent {
 />
 ```
 
+### `onEdit`
+
+-   **타입**: `(key: string) => void`
+-   **설명**: `tabTrailingAction="edit"`일 때 펜 버튼 클릭 시 호출. 탭 제거는 하지 않습니다.
+
+```tsx
+<ChipTabs
+    tabs={tabs}
+    showCloseButton
+    tabTrailingAction="edit"
+    onEdit={(key) => {
+        const next = window.prompt("새 이름", tabs.find((t) => t.key === key)?.label);
+        if (next == null) return;
+        setTabs((prev) =>
+            prev.map((t) => (t.key === key ? { ...t, label: next } : t)),
+        );
+    }}
+/>
+```
+
 ### `onClose`
 
 -   **타입**: `(key: string) => boolean | Promise<boolean>`
--   **설명**: 닫기 버튼 클릭 시 호출. `true`를 반환하면 탭이 제거됨
+-   **설명**: `tabTrailingAction`이 `close`(기본)일 때 X 버튼 클릭 시 호출. `true`를 반환하면 탭이 제거됨
 
 ```tsx
 <ChipTabs

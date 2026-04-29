@@ -30,7 +30,8 @@
 | [`selectedKey`](#selectedkey)               | `string`                                       | -       | -        | Currently selected tab key (controlled) |
 | [`defaultSelected`](#defaultselected)       | `string`                                       | -       | -        | Initial selected tab (uncontrolled)     |
 | [`wrap`](#wrap)                             | `boolean`                                      | `true`  | -        | Multi-line wrap enabled                 |
-| [`showCloseButton`](#showclosebutton)       | `boolean`                                      | `false` | -        | Show close button on all tabs           |
+| [`showCloseButton`](#showclosebutton)       | `boolean`                                      | `false` | -        | Show trailing action area on tabs      |
+| [`tabTrailingAction`](#tabtrailingaction)   | `'close' \| 'edit'`                            | `close` | -        | Trailing control: close (X) or edit     |
 | [`showArrows`](#showarrows)                 | `boolean`                                      | `true`  | -        | Enable scroll arrows                    |
 | [`draggable`](#draggable)                   | `boolean`                                      | `false` | -        | Enable drag-and-drop reordering         |
 | [`keyboardNavigation`](#keyboardnavigation) | `boolean`                                      | `true`  | -        | Enable arrow key navigation             |
@@ -40,6 +41,7 @@
 | [`styles`](#styles)                         | `ChipTabsStyles`                               | -       | -        | Custom style object                     |
 | [`onChange`](#onchange)                     | `(event: ChangeEvent) => void`                 | -       | -        | Tab selection change handler            |
 | [`onClose`](#onclose)                       | `(key: string) => boolean \| Promise<boolean>` | -       | -        | Close button click handler              |
+| [`onEdit`](#onedit)                         | `(key: string) => void`                        | -       | -        | Edit button click handler               |
 | [`onReorder`](#onreorder)                   | `(event: ReorderEvent) => void`                | -       | -        | Tab reorder handler                     |
 
 ### Detailed Descriptions
@@ -53,7 +55,7 @@ interface ChipTabProps {
     key: string; // Unique identifier for the tab
     label: string; // Text displayed on the tab
     icon?: ReactNode; // Optional icon
-    hideCloseButton?: boolean; // Hide close button for this tab
+    hideCloseButton?: boolean; // Hide trailing action (close/edit) for this tab
 }
 ```
 
@@ -89,10 +91,26 @@ If `true`, tabs wrap to multiple lines. If `false`, enables horizontal scrolling
 
 #### `showCloseButton`
 
-Whether to show close button on all tabs.
+Whether to show the trailing action area on every tab. Icon and behavior are controlled by [`tabTrailingAction`](#tabtrailingaction).
 
 ```tsx
 <ChipTabs tabs={tabs} showCloseButton={true} />
+```
+
+#### `tabTrailingAction`
+
+When `showCloseButton` is `true`, selects the trailing control.
+
+- `close` (default): X icon; [`onClose`](#onclose) runs and the package removes the tab when allowed.
+- `edit`: pencil icon; only [`onEdit`](#onedit) runs. Rename/delete flows update `tabs` in your app.
+
+```tsx
+<ChipTabs
+    tabs={tabs}
+    showCloseButton
+    tabTrailingAction="edit"
+    onEdit={(key) => openRenameDialog(key)}
+/>
 ```
 
 #### `showArrows`
@@ -253,9 +271,32 @@ Example:
 />
 ```
 
+### `onEdit`
+
+- **Type**: `(key: string) => void`
+- **Description**: When `tabTrailingAction` is `edit`, called on pencil click. Does not remove tabs.
+
+```tsx
+<ChipTabs
+    tabs={tabs}
+    showCloseButton
+    tabTrailingAction="edit"
+    onEdit={(key) => {
+        const next = window.prompt(
+            "New label",
+            tabs.find((t) => t.key === key)?.label,
+        );
+        if (next == null) return;
+        setTabs((prev) =>
+            prev.map((t) => (t.key === key ? { ...t, label: next } : t)),
+        );
+    }}
+/>
+```
+
 ### `onClose`
 
-Called when close button is clicked. Return `true` to remove the tab.
+Called when the trailing action is `close` (default) and the X is clicked. Return `true` to remove the tab.
 
 ```tsx
 <ChipTabs

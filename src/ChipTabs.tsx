@@ -1,4 +1,10 @@
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import type { ChipTabProps, ChipTabsProps } from "./types";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
@@ -20,6 +26,7 @@ import {
 export function ChipTabs({
     tabs: tagItems,
     showCloseButton = false,
+    tabTrailingAction = "close",
     defaultSelected = "hot",
     selectedKey,
     className = "",
@@ -30,6 +37,7 @@ export function ChipTabs({
     styles = {},
     onChange,
     onClose,
+    onEdit,
     onLoaded,
     onReorder,
     selectedCookieName,
@@ -197,6 +205,14 @@ export function ChipTabs({
         onChange,
         onClose,
     });
+
+    const handleEditClick = useCallback(
+        (event: React.SyntheticEvent, key: string) => {
+            event.stopPropagation();
+            onEdit?.(key);
+        },
+        [onEdit],
+    );
 
     // Hover 효과를 위한 상태 추가
     const [hoveredTab, setHoveredTab] = useState<string | null>(null);
@@ -368,6 +384,7 @@ export function ChipTabs({
                         isTabHovered={isTabHovered}
                         isCloseHovered={isCloseHovered}
                         showCloseButton={showCloseButton}
+                        tabTrailingAction={tabTrailingAction}
                         tabStyle={getTabStyle(
                             isSelected,
                             isTabHovered,
@@ -382,6 +399,7 @@ export function ChipTabs({
                         onTabMouseEnter={() => setHoveredTab(tag.key)}
                         onTabMouseLeave={() => setHoveredTab(null)}
                         onCloseClick={(e) => handleCloseClick(e, tag.key)}
+                        onEditClick={(e) => handleEditClick(e, tag.key)}
                         onCloseMouseEnter={() => setHoveredClose(tag.key)}
                         onCloseMouseLeave={() => setHoveredClose(null)}
                         setButtonRef={setButtonRef}

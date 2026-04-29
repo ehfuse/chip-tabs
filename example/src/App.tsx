@@ -44,6 +44,14 @@ function App() {
     ]);
     const [closeableSelected, setCloseableSelected] = useState<string>("home");
 
+    // Tabs with edit (pencil) trailing action — rename in consumer
+    const [editTabs, setEditTabs] = useState<ChipTabProps[]>([
+        { key: "doc1", label: "Document A" },
+        { key: "doc2", label: "Document B" },
+        { key: "doc3", label: "Document C", hideCloseButton: true },
+    ]);
+    const [editSelected, setEditSelected] = useState<string>("doc1");
+
     // Scroll Mode Tabs
     const [scrollTabs] = useState<ChipTabProps[]>([
         { key: "javascript", label: "JavaScript" },
@@ -253,6 +261,15 @@ function App() {
         return true; // 항상 제거 허용
     };
 
+    const handleEditTab = (key: string) => {
+        const current = editTabs.find((t) => t.key === key)?.label ?? "";
+        const next = window.prompt("Tab label", current);
+        if (next === null || next.trim() === "") return;
+        setEditTabs((prev) =>
+            prev.map((t) => (t.key === key ? { ...t, label: next.trim() } : t)),
+        );
+    };
+
     return (
         <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
             <h1>ChipTab Component Demo</h1>
@@ -343,6 +360,34 @@ function App() {
                 >
                     Selected: <strong>{closeableSelected}</strong> | Total:{" "}
                     {closeableTabs.length} tabs
+                </div>
+            </div>
+
+            <div style={{ marginBottom: "3rem" }}>
+                <h2>With Edit Button (tabTrailingAction=&quot;edit&quot;)</h2>
+                <p style={{ color: "#6b7280", marginBottom: "1rem" }}>
+                    Pencil opens a prompt to rename; third tab uses{" "}
+                    <code>hideCloseButton</code> (no trailing control).
+                </p>
+                <ChipTabs
+                    tabs={editTabs}
+                    selectedKey={editSelected}
+                    showCloseButton
+                    tabTrailingAction="edit"
+                    onChange={(event) =>
+                        setEditSelected(editTabs[event.selectedIndex].key)
+                    }
+                    onEdit={handleEditTab}
+                />
+                <div
+                    style={{
+                        marginTop: "1rem",
+                        padding: "0.5rem",
+                        backgroundColor: "#f3f4f6",
+                        borderRadius: "0.25rem",
+                    }}
+                >
+                    Selected: <strong>{editSelected}</strong>
                 </div>
             </div>
 

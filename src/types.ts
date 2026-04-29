@@ -4,7 +4,8 @@ export interface ChipTabProps {
     key: string;
     label: string;
     icon?: ReactNode;
-    hideCloseButton?: boolean; // close 버튼 숨김 여부
+    /** 닫기/편집 등 오른쪽 트레일링 버튼 숨김 (`showCloseButton`이 true일 때) */
+    hideCloseButton?: boolean;
 }
 
 export interface ChipTabStateStyles {
@@ -59,14 +60,19 @@ export interface ChipTabsProps {
     keyboardNavigation?: boolean; // 방향키로 탭 이동 가능 여부 (기본값 true)
     onChange?: (event: ChangeEvent) => void; // 탭 선택 변경 핸들러
     onClose?: (key: string) => boolean | Promise<boolean>; // close 버튼 클릭 핸들러 - true 반환 시 탭 제거
+    /** `tabTrailingAction`이 `edit`일 때 펜 버튼 클릭 시 호출. 라벨 변경 등은 소비처에서 `tabs`를 갱신 */
+    onEdit?: (key: string) => void;
     onLoaded?: (tabs: ChipTabProps[], selectedKey: string) => void; // 쿠키에서 로드된 탭들을 반환
     onReorder?: (event: ReorderEvent) => void; // 탭 순서 변경 핸들러
     selectedCookieName?: string; // 설정 시 selectedKey를 쿠키에 자동 저장/불러오기
     selectedKey?: string; // 외부에서 선택된 키를 제어할 수 있도록 추가
     showArrows?: boolean; // 스크롤 화살표 표시 여부 (기본값 true, 비활성화 시 희미하게 표시)
-    showCloseButton?: boolean; // close 버튼 표시 여부
+    /** 오른쪽 보조 버튼 영역 표시 (아이콘은 `tabTrailingAction`에 따름) */
+    showCloseButton?: boolean;
     styles?: ChipTabsStyles; // 스타일 커스터마이징
     tabs: ChipTabProps[];
     tabsCookieName?: string; // 설정 시 tabs 배열을 쿠키에 자동 저장/불러오기
+    /** `showCloseButton`이 true일 때 오른쪽 버튼: 닫기(X) 또는 편집(펜) */
+    tabTrailingAction?: "close" | "edit";
     wrap?: boolean; // flex-wrap 사용 여부 (false면 좌우 스크롤)
 }
